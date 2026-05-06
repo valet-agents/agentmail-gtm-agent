@@ -43,19 +43,16 @@ connectors:
       agent uses it to send first-touch emails from a dedicated
       outbound inbox, follow up at 96 hours, classify replies,
       and forward warm leads.
-    slots:
-      AGENTMAIL_API_KEY:
-        description: >-
-          Sign up at agentmail.to and copy the API key.
-      PROSPECTS_CSV:
-        description: >-
-          The prospect list as CSV. Required columns: email,
-          first_name, company, hook (one-line context the
-          agent uses to personalize the first-touch).
-      SALES_HANDOFF_EMAIL:
-        description: >-
-          Where to forward replies the agent classifies as
-          interested.
+    slot_descriptions:
+      AGENTMAIL_API_KEY: >-
+        Sign up at agentmail.to and copy the API key.
+      PROSPECTS_CSV: >-
+        The prospect list as CSV. Required columns: email,
+        first_name, company, hook (one-line context the
+        agent uses to personalize the first-touch).
+      SALES_HANDOFF_EMAIL: >-
+        Where to forward replies the agent classifies as
+        interested.
     ui:
       headline: "Wire the GTM agent to your prospect list."
       blurb: >-
