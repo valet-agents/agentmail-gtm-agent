@@ -4,13 +4,12 @@
 
 # AgentMail GTM Agent
 
-Drop a CSV of prospects. The agent sends a personalized first-touch, follows up once at 96 hours, classifies inbound replies, and forwards the interested ones to your sales inbox.
+Queue prospects via Slack. The agent sends a personalized first-touch, follows up once at 96 hours, classifies inbound replies, and forwards the interested ones to your sales inbox.
 
 ## Prerequisites
 - An [AgentMail](https://agentmail.to) account (mint an API key in the dashboard)
-- A list of prospects as CSV with columns `email, first_name, company, hook` — one-line specific hooks beat generic compliments
-- A sales-team email address for warm hand-offs
 - A Slack workspace where you can install the agent's bot and invite it to one channel
+- The sales handoff email set in `SOUL.md` (under `## Configuration — edit before deploy`)
 - The ability to subscribe an AgentMail webhook to a public URL (the agent's webhook URL is provisioned automatically — you'll paste it into one CLI command after deploy)
 
 <table>
@@ -35,12 +34,12 @@ Drop a CSV of prospects. The agent sends a personalized first-touch, follows up 
 
 ## How it works
 
-1. You paste your prospect CSV into the `PROSPECTS_CSV` slot at deploy time. The agent picks it up on the next hourly heartbeat.
-2. The heartbeat sends one queued first-touch per fire — a personalized 80-word email opened with the prospect's hook, one specific ask, no fluff.
+1. After deploy, you @mention the agent's Slack bot — `queue jane@acme.com hook: saw your post on distributed systems` — and the agent stores the prospect in MEMORY.md.
+2. The hourly heartbeat sends one queued first-touch per fire — a personalized 80-word email opened with the prospect's hook, one specific ask, no fluff.
 3. After 96 hours with no reply, the heartbeat sends a single follow-up in the same thread. Then silent.
 4. AgentMail fires a webhook on every inbound reply. The agent classifies it as `interested`, `not_interested`, `ooo`, or `question`.
-5. Interested replies are forwarded to your `SALES_HANDOFF_EMAIL` with a short cover note. Declines and OOO bounces are silenced. Open questions are posted in Slack so a human handles them.
-6. Anytime, @mention the agent's Slack bot to ask who's queued, who replied today, who's due for follow-up, or to queue a one-off prospect.
+5. Interested replies are forwarded to the sales handoff email (set in `SOUL.md`) with a short cover note. Declines and OOO bounces are silenced. Open questions are posted in Slack so a human handles them.
+6. Anytime, @mention the agent's Slack bot to queue more prospects, ask who's queued, who replied today, who's due for follow-up, pause sends, or remove a prospect.
 
 ## Credits
 

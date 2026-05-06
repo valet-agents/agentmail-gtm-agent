@@ -2,7 +2,7 @@ name: agentmail-gtm-agent
 display_name: AgentMail GTM Agent
 description: >-
   Cold outreach that ships, follows up once, and routes the warm
-  replies. Drop a CSV of prospects. The agent writes a tight
+  replies. Queue prospects via Slack. The agent writes a tight
   first-touch, follows up at 96 hours, classifies inbound replies,
   and forwards the interested ones to your sales inbox.
 category: outbound
@@ -13,16 +13,16 @@ example:
 story:
   hero: "Cold outreach that ships, follows up, and routes the warm replies."
   subheadline: >-
-    Drop a CSV of prospects. The agent sends a personalized
+    Queue prospects via Slack. The agent sends a personalized
     first-touch, follows up once at 96 hours, classifies inbound
     replies, and forwards the interested ones to your sales inbox.
   steps:
     - role: trigger
-      title: "Queue a prospect."
+      title: "Queue a prospect from Slack."
       body: >-
-        Add to your CSV slot or @mention the bot in Slack. The
+        @mention the bot with the email and a one-line hook. The
         agent picks it up on the next sweep.
-      catalog: webhook
+      catalog: slack
     - role: action
       title: "Tight first-touch, one follow-up."
       body: >-
@@ -42,35 +42,33 @@ connectors:
       The AgentMail CLI, preconfigured with your API key. The
       agent uses it to send first-touch emails from a dedicated
       outbound inbox, follow up at 96 hours, classify replies,
-      and forward warm leads.
+      and forward warm leads. Prospects are queued ad-hoc by
+      @mentioning the bot in Slack; the sales handoff email is
+      set in SOUL.md before deploy.
     slot_descriptions:
       AGENTMAIL_API_KEY: >-
         Sign up at agentmail.to and copy the API key.
-      PROSPECTS_CSV: >-
-        The prospect list as CSV. Required columns: email,
-        first_name, company, hook (one-line context the
-        agent uses to personalize the first-touch).
-      SALES_HANDOFF_EMAIL: >-
-        Where to forward replies the agent classifies as
-        interested.
     ui:
-      headline: "Wire the GTM agent to your prospect list."
+      headline: "Connect AgentMail with an API key."
       blurb: >-
-        AgentMail key, your prospect CSV, and the inbox that
-        gets the warm leads.
+        Paste your AgentMail API key. Queue prospects by
+        @mentioning the bot in Slack ("queue jane@acme.com hook:
+        saw your post on X"). Set the sales handoff email in
+        SOUL.md.
       done_note: "AgentMail connected"
 
 channels:
   - catalog: slack
     description: >-
-      The agent gets its own Slack bot. @mention to ask who's
-      been contacted, who replied, who's due for follow-up, or
-      to queue a one-off prospect.
+      The agent gets its own Slack bot. @mention to queue a
+      prospect ("queue jane@acme.com hook: ..."), ask who's been
+      contacted, who replied, who's due for follow-up, or pause
+      sends.
     ui:
       headline: "Give the GTM Agent a Slack bot."
       blurb: >-
-        Visibility into the queue, the follow-ups due, and the
-        replies routed today.
+        Queue prospects from Slack and watch follow-ups, replies,
+        and warm hand-offs land in the same channel.
       done_note: "Bot ready — invite it to a channel"
 
   - catalog: webhook
@@ -84,4 +82,4 @@ channels:
   - type: heartbeat
     every: 1h
     timezone: UTC
-    description: "Sweeps the prospect list once an hour for queued first-touches and 96-hour follow-ups due. Hourly resolution is fine — outreach windows aren't minute-sensitive."
+    description: "Sweeps MEMORY.md prospects once an hour for queued first-touches and 96-hour follow-ups due. Hourly resolution is fine — outreach windows aren't minute-sensitive."

@@ -57,8 +57,9 @@ OOO regex (case-insensitive, match anywhere in the body):
    `question`. When the reply mixes positive interest AND a
    question, default to `interested`.
 6. Route per the SOUL Webhook Workflow Phase 4:
-   - `interested` → forward to `SALES_HANDOFF_EMAIL` with a
-     brief cover line. Do NOT reply to the prospect.
+   - `interested` → forward to the **Sales handoff email**
+     value in the SOUL.md Configuration section with a brief
+     cover line. Do NOT reply to the prospect.
    - `not_interested` → update MEMORY.md, no send.
    - `ooo` → update MEMORY.md, no send.
    - `question` → post in Slack so a human handles it, then

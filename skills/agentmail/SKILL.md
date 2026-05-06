@@ -127,13 +127,14 @@ prefixed with `>`) and signature blocks before classifying.
 ─── Forwarding an interested reply to the sales hand-off ────────
 
 When the classifier marks a reply `interested`, forward the
-original inbound to `SALES_HANDOFF_EMAIL` with a short cover
-line. Use `messages forward`:
+original inbound to the **Sales handoff email** value in the
+SOUL.md Configuration section with a short cover line. Use
+`messages forward`:
 
   PAGER=cat agentmail --format json messages forward \
     --inbox $INBOX_ID \
     --id $INBOUND_MESSAGE_ID \
-    --to $SALES_HANDOFF_EMAIL \
+    --to <sales-handoff-email-from-SOUL.md> \
     --text "$COVER_NOTE"
 
 Cover-note shape (keep it tight, 3-4 lines):
@@ -186,9 +187,9 @@ The agent webhook URL is shown in the dashboard after deploy.
   *manual send* request without an explicit in-thread `👍` or
   "send" from the user. The webhook + heartbeat workflows are
   the only paths that send without a Slack confirm — and
-  that's because they're acting on the queue you set up at
-  deploy time (the CSV) and on inbound replies on threads the
-  agent already started.
+  that's because they're acting on the queue the user
+  populated via Slack (MEMORY.md `prospects`) and on inbound
+  replies on threads the agent already started.
 - Always pass `--format json` or `--format jsonl` for parseable
   output.
 - Cache the resolved inbox id and email in `MEMORY.md` so
